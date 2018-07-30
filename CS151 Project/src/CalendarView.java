@@ -137,63 +137,44 @@ public class CalendarView extends JFrame {
 		}
 	}
 
-	public void addListenersToButtons() {
-		todayButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
+	public void addTodayButton(ActionListener listener) {
 
-			}
-
-		});
-
-		prevButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-			}
-
-		});
-
-		nextButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-			}
-
-		});
-
-		dayButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-			}
-
-		});
-
-		weekButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-			}
-
-		});
-
-		monthButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-			}
-
-		});
-
-		agendaButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-			}
-
-		});
-
-
+		todayButton.addActionListener(listener);
 	}
+
+	public void addPrevButton(ActionListener listener) {
+
+		prevButton.addActionListener(listener);
+	}
+
+	public void addNextButton(ActionListener listener) {
+
+		nextButton.addActionListener(listener);
+	}
+
+	public void addDayButton(ActionListener listener) {
+
+		dayButton.addActionListener(listener);
+	}
+
+	public void addWeekButton(ActionListener listener) {
+
+		weekButton.addActionListener(listener);
+	}
+
+	public void addMonthButton(ActionListener listener) {
+
+		monthButton.addActionListener(listener);
+	}
+
+	public void addAgendaButton(ActionListener listener) {
+
+		agendaButton.addActionListener(listener);
+	}
+
+	public void addCreateButton(ActionListener listener) {
+
+		createButton.addActionListener(listener);
+	}
+
 }
