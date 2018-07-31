@@ -26,10 +26,11 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class CalendarView extends JFrame {
-	Calendar cal = new GregorianCalendar();
+	Calendar cal;
 	CalendarModel model;
 	JLabel monthLabel;
 	JPanel monthPanel;
+	String viewBy;
 
 	JButton todayButton = new JButton("Today");
 	JButton prevButton = new JButton("<");
@@ -41,6 +42,8 @@ public class CalendarView extends JFrame {
 	JButton createButton = new JButton("Create");
 
 	public CalendarView(CalendarModel model) {
+
+		cal = model.getCal();
 
 		JPanel buttonsPanel = new JPanel();
 		JTextArea eventTextArea = new JTextArea(20, 20);
@@ -135,6 +138,29 @@ public class CalendarView extends JFrame {
 				monthPanel.add(day);
 			}
 		}
+	}
+
+	public void updateCalendar(GregorianCalendar cal) {
+		this.cal = cal;
+
+	}
+
+	public void repaint() {
+		monthPanel.removeAll();
+		monthPanel.repaint();
+
+		monthLabel.removeAll();
+		monthLabel.repaint();
+		
+		drawMonth();
+	}
+
+	public void setViewBy(String viewBy) {
+		this.viewBy = viewBy;
+	}
+
+	public String getViewBy() {
+		return viewBy;
 	}
 
 	public void addTodayButton(ActionListener listener) {

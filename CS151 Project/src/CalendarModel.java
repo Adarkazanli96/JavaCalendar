@@ -3,7 +3,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class CalendarModel {
-	Calendar cal = new GregorianCalendar();
+	GregorianCalendar cal = new GregorianCalendar();
 	ArrayList<Event> events = new ArrayList<Event>();
 	
 	
@@ -23,8 +23,12 @@ public class CalendarModel {
 		return events;
 	}
 	
-	public Calendar getCal() {
+	public GregorianCalendar getCal() {
 		return cal;
+	}
+	public void updateCalendar(GregorianCalendar cal) {
+		this.cal = cal;
+		
 	}
 	
 	public class Event {
