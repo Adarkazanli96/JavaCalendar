@@ -30,7 +30,7 @@ public class CalendarView extends JFrame {
 	CalendarModel model;
 	JLabel monthLabel;
 	JPanel monthPanel;
-	String viewBy;
+	String viewBy = "Day";
 
 	JButton todayButton = new JButton("Today");
 	JButton prevButton = new JButton("<");
@@ -92,7 +92,7 @@ public class CalendarView extends JFrame {
 	public void drawMonth() {
 		monthLabel.setText(new SimpleDateFormat("MMM yyyy").format(cal.getTime()));
 
-		String[] daysOfWeek = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
+		String[] daysOfWeek = { "Sun  ", "Mon  ", "Tue  ", "Wed  ", "Thu  ", "Fri  ", "Sat  " };
 		for (int i = 0; i < 7; i++) {
 			JLabel day = new JLabel(daysOfWeek[i]);
 			monthPanel.add(day);
@@ -112,8 +112,8 @@ public class CalendarView extends JFrame {
 					@Override
 					public void mouseClicked(MouseEvent e) {
 						int num = Integer.parseInt(day.getText());
-						// model.setDay(num);
-						System.out.print(d);
+						model.setDay(num);
+						repaint();
 					}
 
 					@Override
@@ -142,16 +142,17 @@ public class CalendarView extends JFrame {
 
 	public void updateCalendar(GregorianCalendar cal) {
 		this.cal = cal;
-
 	}
 
 	public void repaint() {
 		monthPanel.removeAll();
+		monthPanel.revalidate();
 		monthPanel.repaint();
 
 		monthLabel.removeAll();
+		monthLabel.revalidate();
 		monthLabel.repaint();
-		
+
 		drawMonth();
 	}
 

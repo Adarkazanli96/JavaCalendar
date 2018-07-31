@@ -27,8 +27,9 @@ public class CalendarController {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			System.out.println("Entered today listener");
+			model.resetCalendar();
+			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+			view.repaint();
 		}
 	}
 
@@ -36,29 +37,26 @@ public class CalendarController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (view.getViewBy().equals("Day")) {
-				// set the day to one day after
+				// set the day to one day before and repaint
 				cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) + 1);
 				model.updateCalendar(cal);
 				view.repaint();
-				
-				System.out.println("Day: " + cal.get(Calendar.DAY_OF_MONTH) + " MONTH: " + Calendar.MONTH + " YEAR: " + Calendar.YEAR);
 			}
-			
+
 			else if (view.getViewBy().equals("Week")) {
-				// increment week of month
+				// set to previous week and repaint
 				cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) + 7);
 				view.updateCalendar(cal);
+				model.updateCalendar(cal);
 				view.repaint();
-				System.out.println("Day: " + cal.get(Calendar.DAY_OF_MONTH) + " MONTH: " + Calendar.MONTH + " YEAR: " + Calendar.YEAR);
 			}
-			
+
 			else if (view.getViewBy().equals("Month")) {
-				
-				// increment month
-				cal.set(cal.get(Calendar.YEAR), (cal.get(Calendar.MONTH))+1, 1);
+				// set to previous month and repaint
+				cal.set(cal.get(Calendar.YEAR), (cal.get(Calendar.MONTH)) + 1, 1);
 				view.updateCalendar(cal);
+				model.updateCalendar(cal);
 				view.repaint();
-				System.out.println("Day: " + cal.get(Calendar.DAY_OF_MONTH) + " MONTH: " + Calendar.MONTH + " YEAR: " + Calendar.YEAR);
 			}
 
 		}
@@ -67,7 +65,28 @@ public class CalendarController {
 	public class PrevListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			if (view.getViewBy().equals("Day")) {
+				// set the day to one day before and repaint
+				cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) - 1);
+				model.updateCalendar(cal);
+				view.repaint();
+			}
 
+			else if (view.getViewBy().equals("Week")) {
+				// set to previous week and repaint
+				cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) - 7);
+				view.updateCalendar(cal);
+				model.updateCalendar(cal);
+				view.repaint();
+			}
+
+			else if (view.getViewBy().equals("Month")) {
+				// set to previous month and repaint
+				cal.set(cal.get(Calendar.YEAR), (cal.get(Calendar.MONTH)) - 1, 1);
+				view.updateCalendar(cal);
+				model.updateCalendar(cal);
+				view.repaint();
+			}
 		}
 	}
 
@@ -112,6 +131,5 @@ public class CalendarController {
 			System.out.println("Entered today listener");
 		}
 	}
-	
-	
+
 }
