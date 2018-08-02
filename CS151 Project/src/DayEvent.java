@@ -49,5 +49,9 @@ public class DayEvent {
 		
 		return endingTime;
 	}
+	
+	public String toString() {
+		return eventName + " " + getMonth() + " " + getDay() + ", " + getYear() + ": " + getStartingTime() + " - " + getEndingTime();
+	}
 
 }

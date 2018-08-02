@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -40,13 +41,15 @@ public class CalendarView extends JFrame {
 	JButton monthButton = new JButton("Month");
 	JButton agendaButton = new JButton("Agenda");
 	JButton createButton = new JButton("Create");
+	
+	JTextArea eventTextArea;
 
 	public CalendarView(CalendarModel model) {
 
 		cal = model.getCal();
 
 		JPanel buttonsPanel = new JPanel();
-		JTextArea eventTextArea = new JTextArea(20, 20);
+		eventTextArea = new JTextArea(20, 20);
 		JPanel calendar = new JPanel();
 		JPanel panel = new JPanel();
 
@@ -87,6 +90,7 @@ public class CalendarView extends JFrame {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		drawMonth();
+		printDayEventsText();
 
 	}
 
@@ -139,6 +143,19 @@ public class CalendarView extends JFrame {
 				monthPanel.add(day);
 			}
 		}
+	}
+
+	public void printDayEventsText() {
+		eventTextArea.removeAll();
+		//eventTextArea.revalidate();
+		
+		String s = "";
+
+		for (DayEvent d : model.getDayEvents()) {
+			s = s + d + "\n";
+		}
+
+		eventTextArea.setText(s);
 	}
 
 	public void updateCalendar(GregorianCalendar cal) {

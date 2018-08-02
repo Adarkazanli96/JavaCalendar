@@ -7,180 +7,187 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class CalendarModel {
-	
+
 	GregorianCalendar cal;
-	ArrayList<RecurringEvent> recurringEvents = new ArrayList<>();
-	ArrayList<DayEvent> dayEvents = new ArrayList<>();
+	ArrayList<RecurringEvent> recurringEventsList = new ArrayList<>();
+	ArrayList<DayEvent> dayEventsList = new ArrayList<>();
 	int currentDay;
 	int currentMonth;
 	int currentYear;
 
 	public CalendarModel() throws IOException {
-		
+
 		cal = new GregorianCalendar();
-		
-		currentMonth = (cal.get(Calendar.MONTH))+1;
+
+		currentMonth = cal.get(Calendar.MONTH);
 		currentDay = cal.get(Calendar.DAY_OF_MONTH);
 		currentYear = cal.get(Calendar.YEAR);
-		
+
 		File recurringEventFile = new File("input.txt");
-		
+
 		FileReader fr = new FileReader(recurringEventFile);
 		BufferedReader br = new BufferedReader(fr);
-		
+
 		boolean endFile = false;
-		
-		while(endFile ==false) {
-			
-			String line = br.readLine(); 
-			
-			if(line == null) {
-				
+
+		while (endFile == false) {
+
+			String line = br.readLine();
+
+			if (line == null) {
+
 				endFile = true;
-				
+
 				break;
 			}
-					
+
 			String[] pieces = line.split(";");
-			
+
 			String eventName = pieces[0];
-					
+
 			int year = Integer.parseInt(pieces[1]);
-			
+
 			int startingMonth = Integer.parseInt(pieces[2]);
-			
+
 			int endingMonth = Integer.parseInt(pieces[3]);
-			
+
 			String days = pieces[4];
-			
+
 			int startingTime = Integer.parseInt(pieces[5]);
-			
+
 			int endingTime = Integer.parseInt(pieces[6]);
-			
-			recurringEvents.add(new RecurringEvent(eventName, year, startingMonth, endingMonth, days, startingTime, endingTime));
+
+			recurringEventsList.add(
+					new RecurringEvent(eventName, year, startingMonth, endingMonth, days, startingTime, endingTime));
 		}
-	
+
 		br.close();
-		
+
 		File dayEventFile = new File("events.txt");
-		
+
 		FileReader frr = new FileReader(dayEventFile);
 		BufferedReader brr = new BufferedReader(frr);
-		
+
 		boolean endingFile = false;
-		
-		while(endingFile ==false) {
-			
-			String line2 = brr.readLine(); 
-			
-			if(line2 == null) {
-				
+
+		while (endingFile == false) {
+
+			String line2 = brr.readLine();
+
+			if (line2 == null) {
+
 				endingFile = true;
-				
+
 				break;
 			}
-					
+
 			String[] pieces2 = line2.split(";");
-			
+
 			String eventName2 = pieces2[0];
-					
+
 			int year2 = Integer.parseInt(pieces2[1]);
-			
+
 			int month2 = Integer.parseInt(pieces2[2]);
-			
+
 			int day2 = Integer.parseInt(pieces2[3]);
-			
+
 			int startingTime2 = Integer.parseInt(pieces2[4]);
-			
+
 			int endingTime2 = Integer.parseInt(pieces2[5]);
-			
-			dayEvents.add(new DayEvent(eventName2, year2, month2, day2,startingTime2, endingTime2));
+
+			dayEventsList.add(new DayEvent(eventName2, year2, month2, day2, startingTime2, endingTime2));
 		}
-	
+
 		brr.close();
-		
+
 	}
-		
-		public ArrayList<DayEvent> getDayEvents() {
-			
-			ArrayList<DayEvent> dayEvents = new ArrayList<>();
-			
-			for(DayEvent e: dayEvents) {
+
+	public ArrayList<DayEvent> getDayEvents() {
+
+		ArrayList<DayEvent> dayEvents = new ArrayList<>();
+
+		for (DayEvent e : dayEventsList) {
+
+			if (e.getYear() == cal.get(Calendar.YEAR) && e.getMonth() == cal.get(Calendar.MONTH)+1 && e.getDay() == cal.get(Calendar.DAY_OF_MONTH)) {
+
+				dayEvents.add(e);
 				
-				if(e.getYear() == currentYear && e.getMonth() == currentMonth && e.getDay() == currentDay) {
-					
-					dayEvents.add(e);	
-				}	
+				// NOTE: one of the months is ahead of the other month by 1
+				System.out.println(cal.get(Calendar.MONTH) + " " + cal.get(Calendar.DAY_OF_MONTH) + " " + cal.get(Calendar.YEAR));
+				System.out.println(e.getMonth() + " " + e.getDay() + " " + e.getYear());
 			}
-			return dayEvents;
+
 		}
-	
-		public ArrayList<DayEvent> getMonthEvents() {
+
 			
-			ArrayList<DayEvent> monthEvents = new ArrayList<>();
-			
-			for(DayEvent e: dayEvents) {
-				
-				if(e.getYear() == currentYear && e.getMonth() == currentMonth) {
-					
-					monthEvents.add(e);	
-				}
+		return dayEvents;
+	}
+
+	public ArrayList<DayEvent> getWeekEvents() {
+
+		ArrayList<DayEvent> weekEvents = new ArrayList<>();
+
+		for (DayEvent e : dayEventsList) {
+
+			if (e.getYear() == currentYear && e.getMonth() == currentMonth + 1 && e.getDay() == currentDay) {
+
+				weekEvents.add(e);
 			}
-			return monthEvents;
 		}
-	
-		public ArrayList<DayEvent> getYearEvents() {
-			
-			ArrayList<DayEvent> yearEvents = new ArrayList<>();
-			
-			for(DayEvent e: dayEvents) {
-				
-				if(e.getYear() == currentYear) {
-					
-					yearEvents.add(e);	
-				}	
+		return weekEvents;
+	}
+
+	public ArrayList<DayEvent> getMonthEvents() {
+
+		ArrayList<DayEvent> monthEvents = new ArrayList<>();
+
+		for (DayEvent e : dayEventsList) {
+
+			if (e.getYear() == currentYear && e.getMonth() == currentMonth + 1) {
+
+				monthEvents.add(e);
 			}
-			return yearEvents;
+
 		}
-	
-		public ArrayList<RecurringEvent> getAllRecurringEvents() {
-			
-			return recurringEvents;
-		}
-		
-		public ArrayList<DayEvent> getAllDayEvents() {
-			
-			return dayEvents;
-		}
-		
-		/*public ArrayList<DayEvent> AddRecurringToDay(ArrayList<RecurringEvent> recurringEventList){
-			
-			
-			
-		}*/
-	
-		public GregorianCalendar getCal() {
-			return cal;
-		}
-	
-		public void updateCalendar(GregorianCalendar cal) {
-			
-			System.out.println("entered update");
-			this.cal = cal;
-	
-		}
-	
-		public void setDay(int day) {
-			
-			System.out.println("entered setDay");
-			
-			cal.set(Calendar.DAY_OF_MONTH, day);
-		}
-	
-		public void resetCalendar() {
-			
-			System.out.println("entered reset");
-			
-			cal.set(currentYear, currentMonth-1, currentDay);
-		}
+		return monthEvents;
+	}
+
+	public ArrayList<RecurringEvent> getAllRecurringEvents() {
+
+		return recurringEventsList;
+	}
+
+	/*
+	 * public ArrayList<DayEvent> AddRecurringToDay(ArrayList<RecurringEvent>
+	 * recurringEventList){
+	 * 
+	 * 
+	 * 
+	 * }
+	 */
+
+	public GregorianCalendar getCal() {
+		return cal;
+	}
+
+	public void updateCalendar(GregorianCalendar cal) {
+
+		System.out.println("entered update");
+		this.cal = cal;
+
+	}
+
+	public void setDay(int day) {
+
+		System.out.println("entered setDay");
+
+		cal.set(Calendar.DAY_OF_MONTH, day);
+	}
+
+	public void resetCalendar() {
+
+		System.out.println("entered reset");
+
+		cal.set(currentYear, currentMonth, currentDay);
+	}
 }

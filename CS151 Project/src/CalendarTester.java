@@ -11,6 +11,7 @@ public class CalendarTester {
 		CalendarView view = new CalendarView(model);
 		CalendarController controller = new CalendarController(model, view);
 		view.setVisible(true);
-
+		model.getMonthEvents();
+		model.getDayEvents();
 	}
 }
