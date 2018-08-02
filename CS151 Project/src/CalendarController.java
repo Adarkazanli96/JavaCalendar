@@ -28,11 +28,12 @@ public class CalendarController {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
+
 			model.resetCalendar();
-			
+
 			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
 			view.repaint();
+			view.printDayEventsText();
 		}
 	}
 
@@ -45,6 +46,7 @@ public class CalendarController {
 				model.updateCalendar(cal);
 				view.repaint();
 				view.printDayEventsText();
+
 			}
 
 			else if (view.getViewBy().equals("Week")) {
@@ -53,6 +55,8 @@ public class CalendarController {
 				view.updateCalendar(cal);
 				model.updateCalendar(cal);
 				view.repaint();
+				view.printWeekEventsText();
+
 			}
 
 			else if (view.getViewBy().equals("Month")) {
@@ -61,8 +65,8 @@ public class CalendarController {
 				view.updateCalendar(cal);
 				model.updateCalendar(cal);
 				view.repaint();
+				view.printMonthEventsText();
 			}
-
 		}
 	}
 
@@ -74,6 +78,7 @@ public class CalendarController {
 				cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) - 1);
 				model.updateCalendar(cal);
 				view.repaint();
+				view.printDayEventsText();
 			}
 
 			else if (view.getViewBy().equals("Week")) {
@@ -82,16 +87,19 @@ public class CalendarController {
 				view.updateCalendar(cal);
 				model.updateCalendar(cal);
 				view.repaint();
-			}
+				view.printWeekEventsText();
 
-			else if (view.getViewBy().equals("Month")) {
+			} else if (view.getViewBy().equals("Month")) {
 				// set to previous month and repaint
 				cal.set(cal.get(Calendar.YEAR), (cal.get(Calendar.MONTH)) - 1, 1);
 				view.updateCalendar(cal);
 				model.updateCalendar(cal);
 				view.repaint();
+				view.printMonthEventsText();
 			}
+
 		}
+
 	}
 
 	public class DayListener implements ActionListener {
@@ -99,7 +107,7 @@ public class CalendarController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			view.setViewBy("Day");
-			
+
 			view.dayButton.setForeground(Color.BLUE);
 			view.weekButton.setForeground(Color.BLACK);
 			view.monthButton.setForeground(Color.BLACK);
@@ -111,7 +119,7 @@ public class CalendarController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			view.setViewBy("Week");
-			
+
 			view.dayButton.setForeground(Color.BLACK);
 			view.weekButton.setForeground(Color.BLUE);
 			view.monthButton.setForeground(Color.BLACK);
@@ -123,7 +131,7 @@ public class CalendarController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			view.setViewBy("Month");
-			
+
 			view.dayButton.setForeground(Color.BLACK);
 			view.weekButton.setForeground(Color.BLACK);
 			view.monthButton.setForeground(Color.BLUE);
@@ -136,9 +144,9 @@ public class CalendarController {
 		public void actionPerformed(ActionEvent e) {
 
 			System.out.println("Entered agenda listener");
-			
+
 			model.updateCalendar(cal);
-			
+
 			model.getMonthEvents();
 		}
 	}

@@ -41,7 +41,7 @@ public class CalendarView extends JFrame {
 	JButton monthButton = new JButton("Month");
 	JButton agendaButton = new JButton("Agenda");
 	JButton createButton = new JButton("Create");
-	
+
 	JTextArea eventTextArea;
 
 	public CalendarView(CalendarModel model) {
@@ -147,12 +147,35 @@ public class CalendarView extends JFrame {
 
 	public void printDayEventsText() {
 		eventTextArea.removeAll();
-		//eventTextArea.revalidate();
-		
+
 		String s = "";
 
-		for (DayEvent d : model.getDayEvents()) {
-			s = s + d + "\n";
+		for (DayEvent dayEvent : model.getDayEvents()) {
+			s = s + dayEvent + "\n";
+		}
+
+		eventTextArea.setText(s);
+	}
+
+	public void printWeekEventsText() {
+		eventTextArea.removeAll();
+
+		String s = "";
+
+		for (DayEvent weekEvent : model.getWeekEvents()) {
+			s = s + weekEvent + "\n";
+		}
+
+		eventTextArea.setText(s);
+	}
+
+	public void printMonthEventsText() {
+		eventTextArea.removeAll();
+
+		String s = "";
+
+		for (DayEvent monthEvent : model.getMonthEvents()) {
+			s = s + monthEvent + "\n";
 		}
 
 		eventTextArea.setText(s);

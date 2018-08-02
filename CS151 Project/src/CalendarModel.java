@@ -108,29 +108,21 @@ public class CalendarModel {
 
 		for (DayEvent e : dayEventsList) {
 
-			if (e.getYear() == cal.get(Calendar.YEAR) && e.getMonth() == cal.get(Calendar.MONTH)+1 && e.getDay() == cal.get(Calendar.DAY_OF_MONTH)) {
-
+			if (e.getYear() == cal.get(Calendar.YEAR) && e.getMonth() == (cal.get(Calendar.MONTH) + 1)
+					&& e.getDay() == cal.get(Calendar.DAY_OF_MONTH)) {
 				dayEvents.add(e);
-				
-				// NOTE: one of the months is ahead of the other month by 1
-				System.out.println(cal.get(Calendar.MONTH) + " " + cal.get(Calendar.DAY_OF_MONTH) + " " + cal.get(Calendar.YEAR));
-				System.out.println(e.getMonth() + " " + e.getDay() + " " + e.getYear());
 			}
-
 		}
-
-			
 		return dayEvents;
 	}
 
 	public ArrayList<DayEvent> getWeekEvents() {
-
 		ArrayList<DayEvent> weekEvents = new ArrayList<>();
 
 		for (DayEvent e : dayEventsList) {
 
-			if (e.getYear() == currentYear && e.getMonth() == currentMonth + 1 && e.getDay() == currentDay) {
-
+			if (e.getYear() == cal.get(Calendar.YEAR) && e.getMonth() == (cal.get(Calendar.MONTH) + 1)
+					&& e.getDay() == cal.get(Calendar.DAY_OF_MONTH)) {
 				weekEvents.add(e);
 			}
 		}
@@ -143,7 +135,7 @@ public class CalendarModel {
 
 		for (DayEvent e : dayEventsList) {
 
-			if (e.getYear() == currentYear && e.getMonth() == currentMonth + 1) {
+			if (e.getYear() == cal.get(Calendar.YEAR) && e.getMonth() == (cal.get(Calendar.MONTH) + 1)) {
 
 				monthEvents.add(e);
 			}
