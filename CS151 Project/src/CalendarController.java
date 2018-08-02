@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
@@ -27,7 +28,9 @@ public class CalendarController {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			
 			model.resetCalendar();
+			
 			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
 			view.repaint();
 		}
@@ -95,6 +98,10 @@ public class CalendarController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			view.setViewBy("Day");
+			
+			view.dayButton.setForeground(Color.BLUE);
+			view.weekButton.setForeground(Color.BLACK);
+			view.monthButton.setForeground(Color.BLACK);
 		}
 	}
 
@@ -103,6 +110,10 @@ public class CalendarController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			view.setViewBy("Week");
+			
+			view.dayButton.setForeground(Color.BLACK);
+			view.weekButton.setForeground(Color.BLUE);
+			view.monthButton.setForeground(Color.BLACK);
 		}
 	}
 
@@ -111,6 +122,10 @@ public class CalendarController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			view.setViewBy("Month");
+			
+			view.dayButton.setForeground(Color.BLACK);
+			view.weekButton.setForeground(Color.BLACK);
+			view.monthButton.setForeground(Color.BLUE);
 		}
 	}
 
@@ -118,8 +133,12 @@ public class CalendarController {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			System.out.println("Entered today listener");
+
+			System.out.println("Entered agenda listener");
+			
+			model.updateCalendar(cal);
+			
+			model.getMonthEvents();
 		}
 	}
 

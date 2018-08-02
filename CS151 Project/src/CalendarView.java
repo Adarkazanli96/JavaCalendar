@@ -62,6 +62,7 @@ public class CalendarView extends JFrame {
 		buttonsPanel.add(monthButton);
 		buttonsPanel.add(agendaButton);
 		calendar.add(createButton);
+		dayButton.setForeground(Color.BLUE);
 
 		this.setLayout(new BorderLayout());
 		panel.setLayout(new FlowLayout());
