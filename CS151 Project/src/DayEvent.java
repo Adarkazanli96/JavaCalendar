@@ -1,3 +1,6 @@
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class DayEvent {
 	
@@ -7,6 +10,7 @@ public class DayEvent {
 	private int day;
 	private int startingTime;
 	private int endingTime;
+	private int week;
 	
 	public DayEvent(String eventName, int year, int month,int day,
 					int startingTime,int endingTime) {	
@@ -17,6 +21,10 @@ public class DayEvent {
 	this.day = day;
 	this.startingTime = startingTime;
 	this.endingTime = endingTime;
+	
+	GregorianCalendar differentCal = new GregorianCalendar();
+	differentCal.set(year, month, day);
+	this.week = differentCal.get(Calendar.WEEK_OF_YEAR);
 	
 	}
 	
@@ -38,7 +46,11 @@ public class DayEvent {
 	public int getDay() {
 		
 		return day;
-	}		
+	}
+	
+	public int getWeek() {
+		return week;
+	}
 
 	public int getStartingTime() {
 		

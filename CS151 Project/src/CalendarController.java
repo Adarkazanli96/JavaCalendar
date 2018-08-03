@@ -111,6 +111,9 @@ public class CalendarController {
 			view.dayButton.setForeground(Color.BLUE);
 			view.weekButton.setForeground(Color.BLACK);
 			view.monthButton.setForeground(Color.BLACK);
+			
+			// print the events for that day
+			view.printDayEventsText();
 		}
 	}
 
@@ -123,6 +126,9 @@ public class CalendarController {
 			view.dayButton.setForeground(Color.BLACK);
 			view.weekButton.setForeground(Color.BLUE);
 			view.monthButton.setForeground(Color.BLACK);
+			
+			//print the events for that week
+			view.printWeekEventsText();
 		}
 	}
 
@@ -135,6 +141,9 @@ public class CalendarController {
 			view.dayButton.setForeground(Color.BLACK);
 			view.weekButton.setForeground(Color.BLACK);
 			view.monthButton.setForeground(Color.BLUE);
+			
+			// print events for that month
+			view.printMonthEventsText();
 		}
 	}
 

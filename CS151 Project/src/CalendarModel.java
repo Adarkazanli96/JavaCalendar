@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.TreeMap;
 
 public class CalendarModel {
 
@@ -121,11 +122,15 @@ public class CalendarModel {
 
 		for (DayEvent e : dayEventsList) {
 
-			if (e.getYear() == cal.get(Calendar.YEAR) && e.getMonth() == (cal.get(Calendar.MONTH) + 1)
-					&& e.getDay() == cal.get(Calendar.DAY_OF_MONTH)) {
+			if (e.getWeek() == cal.get(Calendar.WEEK_OF_YEAR)) {
 				weekEvents.add(e);
 			}
 		}
+		
+		for(DayEvent d: weekEvents) {
+			System.out.println(d);
+		}
+		
 		return weekEvents;
 	}
 
