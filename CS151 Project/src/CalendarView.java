@@ -25,6 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 public class CalendarView extends JFrame {
 	Calendar cal;
@@ -70,7 +71,8 @@ public class CalendarView extends JFrame {
 		this.setLayout(new BorderLayout());
 		panel.setLayout(new FlowLayout());
 		calendar.setLayout(new BorderLayout());
-		monthPanel.setLayout(new GridLayout(6, 15));
+		monthPanel.setLayout(new GridLayout(0, 7, 5, 5));
+		monthPanel.setBorder(new EmptyBorder(0, 10, 0, 0));
 
 		// add the calendar panel and the event text area to the panel
 		panel.add(calendar);

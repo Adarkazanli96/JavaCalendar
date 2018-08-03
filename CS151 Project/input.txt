@@ -1,5 +1,1 @@
-math1 class;2018;8;9;MWF;9;10
-math2 class;2018;8;10;MWF;11;12
-math3 class;2018;10;11;MWF;15;17
-math4 class;2018;11;11;MWF;17;19
-math5 class;2018;11;12;MWF;16;17
+camping class;2018;8;9;MWF;9;10

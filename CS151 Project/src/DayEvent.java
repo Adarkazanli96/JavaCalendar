@@ -23,7 +23,7 @@ public class DayEvent {
 	this.endingTime = endingTime;
 	
 	GregorianCalendar differentCal = new GregorianCalendar();
-	differentCal.set(year, month, day);
+	differentCal.set(year, month - 1, day);
 	this.week = differentCal.get(Calendar.WEEK_OF_YEAR);
 	
 	}
