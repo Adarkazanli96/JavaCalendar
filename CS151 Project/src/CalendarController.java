@@ -12,6 +12,7 @@ public class CalendarController {
 	private CalendarView view;
 	private CalendarModel model;
 	private GregorianCalendar cal;
+	private File eventFile;
 
 	public CalendarController(CalendarModel model, CalendarView view) {
 		this.model = model;
@@ -221,25 +222,46 @@ public class CalendarController {
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("Entered save listener");
 
+			DayEvent temp = null;
+
 			for (DayEvent event : model.getAllDayEvents()) {
 
-				if (event.getYear() == cal.get(Calendar.YEAR) && event.getMonth() == cal.get(Calendar.MONTH)
+				/*
+				 * System.out.println(event.getYear()+" "+cal.get(Calendar.YEAR) );
+				 * System.out.println(event.getMonth()+" "+((cal.get(Calendar.MONTH))+1));
+				 * System.out.println(event.getDay()+" "+ cal.get(Calendar.DAY_OF_MONTH));
+				 * System.out.println(event.getStartingTime()+" "+
+				 * Integer.parseInt(view.getStartTimeTextField().getText()));
+				 */
+
+				if (event.getYear() == cal.get(Calendar.YEAR) && event.getMonth() == (cal.get(Calendar.MONTH)) + 1
 						&& event.getDay() == cal.get(Calendar.DAY_OF_MONTH)
-						&& event.getStartingTime() == Integer.parseInt(view.getStartTimeTextField().getText())) {
+						&& Integer.parseInt(view.getStartTimeTextField().getText()) >= event.getStartingTime()
+						&& Integer.parseInt(view.getStartTimeTextField().getText()) < event.getEndingTime()
+						|| Integer.parseInt(view.getEndTimeTextField().getText()) < event.getEndingTime()
+								&& Integer.parseInt(view.getEndTimeTextField().getText()) > event.getStartingTime()) {
+
+					// System.out.println("Entered conflic");
 
 					view.displayErrorMessage("Enter event without time conflict");
-				} else {
-					model.addDayEvent(new DayEvent(view.getEventTextField().getText(), cal.get(Calendar.YEAR),
-							cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH),
-							Integer.parseInt(view.getStartTimeTextField().getText()),
-							Integer.parseInt(view.getEndTimeTextField().getText())));
+				}
 
+				else {
+
+					// System.out.println("Entered else");
+
+					temp = new DayEvent(view.getEventTextField().getText(), cal.get(Calendar.YEAR),
+							(cal.get(Calendar.MONTH)) + 1, cal.get(Calendar.DAY_OF_MONTH),
+							Integer.parseInt(view.getStartTimeTextField().getText()),
+							Integer.parseInt(view.getEndTimeTextField().getText()));
 				}
 			}
 
+			model.addDayEvent(temp);
+
 			model.sortByDateTime();
 
-			File eventFile = new File("events.txt");
+			eventFile = new File("events.txt");
 
 			try {
 				eventFile.createNewFile();
@@ -251,6 +273,7 @@ public class CalendarController {
 			FileWriter fw = null;
 
 			try {
+
 				fw = new FileWriter(eventFile);
 			}
 
@@ -263,12 +286,14 @@ public class CalendarController {
 
 			for (DayEvent event : model.getAllDayEvents()) {
 
-				pw.write(event.getEventName() + ";" + event.getMonth() + ";" + event.getDay() + ";"
-						+ event.getStartingTime() + ";" + event.getEndingTime() + "\n");
+				// System.out.println(event);
+
+				pw.write(event.getEventName() + ";" + event.getYear() + ";" + event.getMonth() + ";" + event.getDay()
+						+ ";" + event.getStartingTime() + ";" + event.getEndingTime() + "\n");
 			}
 
+			pw.close();
 		}
-
 	}
 
 	public class RecurringEventWindowSave implements ActionListener {

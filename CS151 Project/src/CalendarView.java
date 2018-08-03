@@ -270,16 +270,20 @@ public class CalendarView extends JFrame {
 		dayEventDateField.setText(
 				(cal.get(Calendar.MONTH)) + 1 + "/" + cal.get(Calendar.DAY_OF_MONTH) + "/" + cal.get(Calendar.YEAR));
 
-		dayEventStartTimeField.setText("14:00");
+
+		dayEventStartTimeField.setText("HH");
 
 		JLabel to = new JLabel("  to  ");
 
-		dayEventEndTimeField.setText("16:00");
+		dayEventEndTimeField.setText("HH");
 
 		dayEventTop.add(dayEventEventField);
 
 		dayEventBottom.setLayout(new FlowLayout());
+		
+		dayEventBottom.add(new JLabel("Date: "));
 		dayEventBottom.add(dayEventDateField);
+		dayEventBottom.add(new JLabel("Time: "));
 		dayEventBottom.add(dayEventStartTimeField);
 		dayEventBottom.add(to);
 		dayEventBottom.add(dayEventEndTimeField);
