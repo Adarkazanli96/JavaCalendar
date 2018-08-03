@@ -6,7 +6,9 @@
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,7 +27,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+
 
 public class CalendarView extends JFrame {
 	Calendar cal;
@@ -42,6 +46,21 @@ public class CalendarView extends JFrame {
 	JButton monthButton = new JButton("Month");
 	JButton agendaButton = new JButton("Agenda");
 	JButton createButton = new JButton("Create");
+	
+	JFrame popWindow1 = new JFrame();
+	JFrame popWindow2 = new JFrame();
+	
+	// buttons for popWindow1
+	JPanel top = new JPanel();
+	JPanel bottom = new JPanel();
+
+	
+	JButton dayEventButton = new JButton("Day Event");
+	JButton recurringEventButton = new JButton("Recurring Event");
+	
+	JButton saveButton = new JButton("Save");
+	JButton cancel1Button = new JButton("Cancel");
+	JButton cancel2Button = new JButton("Cancel");
 
 	JTextArea eventTextArea;
 
@@ -81,6 +100,14 @@ public class CalendarView extends JFrame {
 		this.add(buttonsPanel, BorderLayout.NORTH);
 		this.add(panel, BorderLayout.CENTER);
 
+		/*
+		 * createButton.setBorder(UIManager.getBorder("Button.border"));
+		 * createButton.setPreferredSize(new Dimension(71, 30));
+		 * createButton.setFont(new Font("SansSerif", Font.BOLD, 11));
+		 * createButton.setForeground(new Color(255, 255, 255));
+		 * createButton.setBackground(new Color(220, 20,60));
+		 */
+
 		calendar.add(createButton, BorderLayout.NORTH);
 		calendar.add(monthLabel, BorderLayout.CENTER);
 		calendar.add(monthPanel, BorderLayout.SOUTH);
@@ -93,6 +120,7 @@ public class CalendarView extends JFrame {
 
 		drawMonth();
 		printDayEventsText();
+		this.setResizable(false);
 
 	}
 
@@ -199,6 +227,84 @@ public class CalendarView extends JFrame {
 		drawMonth();
 	}
 
+	public void createEvent() {
+		setResizable(false);
+
+		popWindow1.setLayout(new BorderLayout());
+
+		popWindow1.add(dayEventButton, BorderLayout.NORTH);
+
+		popWindow1.add(recurringEventButton, BorderLayout.CENTER);
+		
+		popWindow1.add(cancel1Button, BorderLayout.SOUTH);
+		
+
+		popWindow1.pack();
+
+		popWindow1.setVisible(true);
+		popWindow1.setResizable(false);
+		
+	}
+
+	public void createDayEvent() {
+		
+		JTextField event = new JTextField(40);
+		JTextField startTime = new JTextField(10);
+		JTextField endTime = new JTextField(10);
+
+		event.setText("Enter event here");
+
+		JTextArea date = new JTextArea();
+
+		date.setText(
+				(cal.get(Calendar.MONTH)) + 1 + "/" + cal.get(Calendar.DAY_OF_MONTH) + "/" + cal.get(Calendar.YEAR));
+
+		startTime.setText("14:00");
+
+		JLabel to = new JLabel("  to  ");
+
+		endTime.setText("16:00");
+
+		top.add(event);
+
+		bottom.setLayout(new FlowLayout());
+
+		bottom.add(date);
+
+		bottom.add(startTime);
+
+		bottom.add(to);
+
+		bottom.add(endTime);
+
+		bottom.add(saveButton);
+
+		bottom.add(cancel2Button);
+
+		popWindow2.setLayout(new BorderLayout());
+
+		popWindow2.add(top, BorderLayout.NORTH);
+
+		popWindow2.add(bottom, BorderLayout.SOUTH);
+
+		popWindow2.pack();
+
+		popWindow2.setVisible(true);
+		popWindow2.setResizable(false);
+	}
+	
+	public void deletePopWindow1() {
+		popWindow1.remove(top);
+		popWindow1.remove(bottom);
+		top.removeAll();
+		bottom.removeAll();
+		popWindow1.dispose();
+	}
+	
+	public void deletePopWindow2() {
+		popWindow2.dispose();
+	}
+
 	public void setViewBy(String viewBy) {
 		this.viewBy = viewBy;
 	}
@@ -245,6 +351,18 @@ public class CalendarView extends JFrame {
 	public void addCreateButton(ActionListener listener) {
 
 		createButton.addActionListener(listener);
+	}
+	
+	public void addDayEventButton(ActionListener listener) {
+		dayEventButton.addActionListener(listener);
+	}
+
+	public void addCancel1Button(ActionListener listener) {
+		cancel1Button.addActionListener(listener);
+	}
+	
+	public void addCancel2Button(ActionListener listener) {
+		cancel2Button.addActionListener(listener);
 	}
 
 }

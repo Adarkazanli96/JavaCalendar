@@ -22,6 +22,9 @@ public class CalendarController {
 		this.view.addMonthButton(new MonthListener());
 		this.view.addAgendaButton(new AgendaListener());
 		this.view.addCreateButton(new CreateListener());
+		this.view.addDayEventButton(new DayEventListener());
+		this.view.addCancel1Button(new Cancel1Listener());
+		this.view.addCancel2Button(new Cancel2Listener());
 	}
 
 	public class TodayListener implements ActionListener {
@@ -164,9 +167,35 @@ public class CalendarController {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			System.out.println("Entered today listener");
+			view.createEvent();
 		}
+	}
+	
+	public class DayEventListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			view.createDayEvent();
+		}
+		
+	}
+	
+	public class Cancel1Listener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			view.deletePopWindow1();
+		}
+		
+	}
+	
+	public class Cancel2Listener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			view.deletePopWindow2();
+		}
+		
 	}
 
 }
