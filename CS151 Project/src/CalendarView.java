@@ -59,6 +59,8 @@ public class CalendarView extends JFrame {
 	// panels for recurring event window
 	JPanel recurringEventTop = new JPanel();
 	JPanel recurringEventBottom = new JPanel();
+	JPanel recurringEventBottomLeft = new JPanel();
+	JPanel recurringEventBottomRight = new JPanel();
 
 	// buttons for recurring event window
 	JButton recurringEventSave = new JButton("Save");
@@ -68,9 +70,9 @@ public class CalendarView extends JFrame {
 	JTextField recurringEventEventField = new JTextField(40);
 	JTextField recurringEventStartTimeField = new JTextField(10);
 	JTextField recurringEventEndTimeField = new JTextField(10);
-	JTextField recurringEventDayField = new JTextField();
+	JTextField recurringEventDayField = new JTextField(2);
 	JTextArea recurringEventStartDateField = new JTextArea();
-	JTextArea recurringEventEndDateField = new JTextArea();
+	JTextArea recurringEventEndDateField = new JTextArea(1, 6);
 
 	JTextArea eventTextArea;
 
@@ -103,9 +105,11 @@ public class CalendarView extends JFrame {
 		monthPanel.setLayout(new GridLayout(0, 7, 5, 5));
 		monthPanel.setBorder(new EmptyBorder(0, 10, 0, 0));
 
-		// add the calendar panel and the event text area to the panel
+		// add the calendar panel and the scroll panel to the panel
 		panel.add(calendar);
-		panel.add(eventTextArea);
+		JScrollPane sp = new JScrollPane(eventTextArea);
+		panel.add(sp);
+		sp.setVerticalScrollBarPolicy(ScrollPaneLayout.VERTICAL_SCROLLBAR_ALWAYS);
 
 		this.add(buttonsPanel, BorderLayout.NORTH);
 		this.add(panel, BorderLayout.CENTER);
@@ -213,6 +217,18 @@ public class CalendarView extends JFrame {
 		eventTextArea.setText(s);
 	}
 
+	public void printAgenda() {
+		eventTextArea.removeAll();
+
+		String s = "";
+
+		for (DayEvent event : model.getAllDayEvents()) {
+			s = s + event + "\n";
+		}
+
+		eventTextArea.setText(s);
+	}
+
 	public void updateCalendar(GregorianCalendar cal) {
 		this.cal = cal;
 	}
@@ -263,25 +279,16 @@ public class CalendarView extends JFrame {
 		dayEventTop.add(dayEventEventField);
 
 		dayEventBottom.setLayout(new FlowLayout());
-
 		dayEventBottom.add(dayEventDateField);
-
 		dayEventBottom.add(dayEventStartTimeField);
-
 		dayEventBottom.add(to);
-
 		dayEventBottom.add(dayEventEndTimeField);
-
 		dayEventBottom.add(dayEventSave);
-
 		dayEventBottom.add(dayEventCancel);
 
 		dayEventWindow.setLayout(new BorderLayout());
-
 		dayEventWindow.add(dayEventTop, BorderLayout.NORTH);
-
 		dayEventWindow.add(dayEventBottom, BorderLayout.SOUTH);
-
 		dayEventWindow.pack();
 
 		dayEventWindow.setVisible(true);
@@ -289,15 +296,100 @@ public class CalendarView extends JFrame {
 	}
 
 	public void createRecurringEvent() {
+		recurringEventEventField.setText("Enter event here");
+
+		JPanel datePanel = new JPanel();
+		JPanel timePanel = new JPanel();
+		JPanel dayPanel = new JPanel();
+
+		recurringEventStartDateField.setText(
+				(cal.get(Calendar.MONTH)) + 1 + "/" + cal.get(Calendar.DAY_OF_MONTH) + "/" + cal.get(Calendar.YEAR));
+
+		recurringEventEndDateField.setText("");
+
+		recurringEventStartTimeField.setText("14:00");
+
+		recurringEventEndTimeField.setText("16:00");
+
+		recurringEventTop.add(recurringEventEventField);
+
+		recurringEventBottom.setLayout(new BorderLayout());
+		recurringEventBottomLeft.setLayout(new BorderLayout());
+		recurringEventBottomRight.setLayout(new BorderLayout());
+
+		datePanel.add(new JLabel("Date: "));
+		datePanel.setLayout(new FlowLayout());
+		datePanel.add(recurringEventStartDateField);
+		datePanel.add(new JLabel("  to  "));
+		datePanel.add(recurringEventEndDateField);
+		datePanel.add(new JLabel("Days: "));
+		datePanel.add(recurringEventDayField);
+
+		timePanel.add(new JLabel("Time: "));
+		timePanel.setLayout(new FlowLayout());
+		timePanel.add(recurringEventStartTimeField);
+		timePanel.add(new JLabel(" to "));
+		timePanel.add(recurringEventEndTimeField);
+
+		recurringEventBottomLeft.add(datePanel, BorderLayout.NORTH);
+		recurringEventBottomLeft.add(timePanel, BorderLayout.SOUTH);
+
+		recurringEventBottomRight.add(recurringEventSave, BorderLayout.NORTH);
+		recurringEventBottomRight.add(recurringEventCancel, BorderLayout.SOUTH);
+
+		recurringEventBottom.add(recurringEventBottomRight, BorderLayout.EAST);
+		recurringEventBottom.add(recurringEventBottomLeft, BorderLayout.WEST);
+
+		recurringEventWindow.setLayout(new BorderLayout());
+		recurringEventWindow.add(recurringEventTop, BorderLayout.NORTH);
+		recurringEventWindow.add(recurringEventBottom, BorderLayout.SOUTH);
+
+		recurringEventWindow.pack();
+
+		recurringEventWindow.setVisible(true);
+		recurringEventWindow.setResizable(false);
 
 	}
 
+	public void displayErrorMessage(String errorMessage) {
+		JOptionPane.showMessageDialog(this, errorMessage);
+	}
+
 	public void deleteOptionWindow() {
+
 		optionWindow.dispose();
 	}
 
 	public void deleteDayEventWindow() {
+		dayEventTop.removeAll();
+		dayEventTop.revalidate();
+		dayEventTop.repaint();
+
+		dayEventBottom.removeAll();
+		dayEventBottom.revalidate();
+		dayEventBottom.repaint();
+
 		dayEventWindow.dispose();
+	}
+
+	public void deleteRecurringEventWindow() {
+		recurringEventBottomLeft.removeAll();
+		recurringEventBottomLeft.revalidate();
+		recurringEventBottomLeft.repaint();
+
+		recurringEventBottomRight.removeAll();
+		recurringEventBottomRight.revalidate();
+		recurringEventBottomRight.repaint();
+
+		recurringEventTop.removeAll();
+		recurringEventTop.revalidate();
+		recurringEventTop.repaint();
+
+		recurringEventBottom.removeAll();
+		recurringEventBottom.revalidate();
+		recurringEventBottom.repaint();
+
+		recurringEventWindow.dispose();
 	}
 
 	public void setViewBy(String viewBy) {
@@ -368,12 +460,28 @@ public class CalendarView extends JFrame {
 		dayEventButton.addActionListener(listener);
 	}
 
+	public void addRecurringEventButton(ActionListener listener) {
+		recurringEventButton.addActionListener(listener);
+	}
+
 	public void addOptionWindowCancelButton(ActionListener listener) {
 		optionWindowCancel.addActionListener(listener);
 	}
 
+	public void addDayEventWindowSaveButton(ActionListener listener) {
+		dayEventSave.addActionListener(listener);
+	}
+
 	public void addDayEventWindowCancelButton(ActionListener listener) {
 		dayEventCancel.addActionListener(listener);
+	}
+
+	public void addRecurringEventWindowSaveButton(ActionListener listener) {
+		recurringEventSave.addActionListener(listener);
+	}
+
+	public void addRecurringEventWindowCancelButton(ActionListener listener) {
+		recurringEventCancel.addActionListener(listener);
 	}
 
 }

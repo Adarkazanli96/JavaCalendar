@@ -66,7 +66,7 @@ public class CalendarModel {
 
 			recurringEventsList.add(
 					new RecurringEvent(eventName, year, startingMonth, endingMonth, days, startingTime, endingTime));
-				
+
 		}
 
 		br.close();
@@ -107,9 +107,9 @@ public class CalendarModel {
 		}
 
 		brr.close();
-		
+
 		convertFromRecToDay();
-		
+
 		sortByDateTime();
 
 	}
@@ -163,6 +163,14 @@ public class CalendarModel {
 	public ArrayList<RecurringEvent> getAllRecurringEvents() {
 
 		return recurringEventsList;
+	}
+
+	public ArrayList<DayEvent> getAllDayEvents() {
+		return dayEventsList;
+	}
+
+	public void addDayEvent(DayEvent e) {
+		dayEventsList.add(e);
 	}
 
 	public void convertFromRecToDay() {
@@ -333,10 +341,10 @@ public class CalendarModel {
 
 		cal.set(currentYear, currentMonth, currentDay);
 	}
-	
-	public void sortByDateTime(){
+
+	public void sortByDateTime() {
 		TreeSet<DayEvent> sorter = new TreeSet<>(dayEventsList);
 		dayEventsList.removeAll(dayEventsList);
 		dayEventsList.addAll(sorter);
-}
+	}
 }

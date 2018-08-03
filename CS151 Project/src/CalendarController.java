@@ -1,6 +1,10 @@
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -23,8 +27,15 @@ public class CalendarController {
 		this.view.addAgendaButton(new AgendaListener());
 		this.view.addCreateButton(new CreateListener());
 		this.view.addDayEventButton(new DayEventListener());
+		this.view.addRecurringEventButton(new RecurringEventListener());
+
 		this.view.addOptionWindowCancelButton(new OptionWindowCancel());
+
+		this.view.addDayEventWindowSaveButton(new DayEventWindowSave());
 		this.view.addDayEventWindowCancelButton(new DayEventWindowCancel());
+
+		this.view.addRecurringEventWindowSaveButton(new RecurringEventWindowSave());
+		this.view.addRecurringEventWindowCancelButton(new RecurringEventWindowCancel());
 	}
 
 	public class TodayListener implements ActionListener {
@@ -114,7 +125,7 @@ public class CalendarController {
 			view.dayButton.setForeground(Color.BLUE);
 			view.weekButton.setForeground(Color.BLACK);
 			view.monthButton.setForeground(Color.BLACK);
-			
+
 			// print the events for that day
 			view.printDayEventsText();
 		}
@@ -129,8 +140,8 @@ public class CalendarController {
 			view.dayButton.setForeground(Color.BLACK);
 			view.weekButton.setForeground(Color.BLUE);
 			view.monthButton.setForeground(Color.BLACK);
-			
-			//print the events for that week
+
+			// print the events for that week
 			view.printWeekEventsText();
 		}
 	}
@@ -144,7 +155,7 @@ public class CalendarController {
 			view.dayButton.setForeground(Color.BLACK);
 			view.weekButton.setForeground(Color.BLACK);
 			view.monthButton.setForeground(Color.BLUE);
-			
+
 			// print events for that month
 			view.printMonthEventsText();
 		}
@@ -155,11 +166,8 @@ public class CalendarController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			System.out.println("Entered agenda listener");
-
-			model.updateCalendar(cal);
-
-			model.getMonthEvents();
+			// print all the events
+			view.printAgenda();
 		}
 	}
 
@@ -170,32 +178,115 @@ public class CalendarController {
 			view.createEvent();
 		}
 	}
-	
-	public class DayEventListener implements ActionListener{
+
+	public class DayEventListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			view.createDayEvent();
 		}
-		
+
 	}
-	
-	public class OptionWindowCancel implements ActionListener{
+
+	public class RecurringEventListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			view.createRecurringEvent();
+		}
+
+	}
+
+	public class OptionWindowCancel implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			view.deleteOptionWindow();
 		}
-		
+
 	}
-	
-	public class DayEventWindowCancel implements ActionListener{
+
+	public class DayEventWindowCancel implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			view.deleteDayEventWindow();
 		}
-		
+
+	}
+
+	public class DayEventWindowSave implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("Entered save listener");
+
+			for (DayEvent event : model.getAllDayEvents()) {
+
+				if (event.getYear() == cal.get(Calendar.YEAR) && event.getMonth() == cal.get(Calendar.MONTH)
+						&& event.getDay() == cal.get(Calendar.DAY_OF_MONTH)
+						&& event.getStartingTime() == Integer.parseInt(view.getStartTimeTextField().getText())) {
+
+					view.displayErrorMessage("Enter event without time conflict");
+				} else {
+					model.addDayEvent(new DayEvent(view.getEventTextField().getText(), cal.get(Calendar.YEAR),
+							cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH),
+							Integer.parseInt(view.getStartTimeTextField().getText()),
+							Integer.parseInt(view.getEndTimeTextField().getText())));
+
+				}
+			}
+
+			model.sortByDateTime();
+
+			File eventFile = new File("events.txt");
+
+			try {
+				eventFile.createNewFile();
+			} catch (IOException e1) {
+
+				e1.printStackTrace();
+			}
+
+			FileWriter fw = null;
+
+			try {
+				fw = new FileWriter(eventFile);
+			}
+
+			catch (IOException e1) {
+
+				e1.printStackTrace();
+			}
+
+			PrintWriter pw = new PrintWriter(fw);
+
+			for (DayEvent event : model.getAllDayEvents()) {
+
+				pw.write(event.getEventName() + ";" + event.getMonth() + ";" + event.getDay() + ";"
+						+ event.getStartingTime() + ";" + event.getEndingTime() + "\n");
+			}
+
+		}
+
+	}
+
+	public class RecurringEventWindowSave implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+		}
+
+	}
+
+	public class RecurringEventWindowCancel implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			view.deleteRecurringEventWindow();
+		}
+
 	}
 
 }
