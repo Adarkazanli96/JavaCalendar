@@ -4,32 +4,12 @@
 // Buttons are contained within the buttonSanel
 // the center panel has 2 panels, one is for the day calendar, and one is for the event text area
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
-import javax.swing.border.EmptyBorder;
-
+import java.awt.*;
+import java.awt.event.*;
+import java.text.*;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.border.*;
 
 public class CalendarView extends JFrame {
 	Calendar cal;
@@ -38,6 +18,7 @@ public class CalendarView extends JFrame {
 	JPanel monthPanel;
 	String viewBy = "Day";
 
+	// Buttons displayed in the initial screen
 	JButton todayButton = new JButton("Today");
 	JButton prevButton = new JButton("<");
 	JButton nextButton = new JButton(">");
@@ -46,21 +27,50 @@ public class CalendarView extends JFrame {
 	JButton monthButton = new JButton("Month");
 	JButton agendaButton = new JButton("Agenda");
 	JButton createButton = new JButton("Create");
-	
-	JFrame popWindow1 = new JFrame();
-	JFrame popWindow2 = new JFrame();
-	
-	// buttons for popWindow1
-	JPanel top = new JPanel();
-	JPanel bottom = new JPanel();
 
-	
+	// window that pops up when create is pressed
+	JFrame optionWindow = new JFrame();
+
+	// buttons for optionWindow
+	JButton optionWindowCancel = new JButton("Cancel");
 	JButton dayEventButton = new JButton("Day Event");
 	JButton recurringEventButton = new JButton("Recurring Event");
-	
-	JButton saveButton = new JButton("Save");
-	JButton cancel1Button = new JButton("Cancel");
-	JButton cancel2Button = new JButton("Cancel");
+
+	// window that pops up when day event is pressed
+	JFrame dayEventWindow = new JFrame();
+
+	// panels for dayEventWindow
+	JPanel dayEventTop = new JPanel();
+	JPanel dayEventBottom = new JPanel();
+
+	// buttons for dayEventWindow
+	JButton dayEventSave = new JButton("Save");
+	JButton dayEventCancel = new JButton("Cancel");
+
+	// text fields for dayEventWindow
+	JTextField dayEventEventField = new JTextField(40);
+	JTextField dayEventStartTimeField = new JTextField(10);
+	JTextField dayEventEndTimeField = new JTextField(10);
+	JTextArea dayEventDateField = new JTextArea();
+
+	// window that pops up when recurring event is pressed
+	JFrame recurringEventWindow = new JFrame();
+
+	// panels for recurring event window
+	JPanel recurringEventTop = new JPanel();
+	JPanel recurringEventBottom = new JPanel();
+
+	// buttons for recurring event window
+	JButton recurringEventSave = new JButton("Save");
+	JButton recurringEventCancel = new JButton("Cancel");
+
+	// text fields for recurring event window
+	JTextField recurringEventEventField = new JTextField(40);
+	JTextField recurringEventStartTimeField = new JTextField(10);
+	JTextField recurringEventEndTimeField = new JTextField(10);
+	JTextField recurringEventDayField = new JTextField();
+	JTextArea recurringEventStartDateField = new JTextArea();
+	JTextArea recurringEventEndDateField = new JTextArea();
 
 	JTextArea eventTextArea;
 
@@ -99,14 +109,6 @@ public class CalendarView extends JFrame {
 
 		this.add(buttonsPanel, BorderLayout.NORTH);
 		this.add(panel, BorderLayout.CENTER);
-
-		/*
-		 * createButton.setBorder(UIManager.getBorder("Button.border"));
-		 * createButton.setPreferredSize(new Dimension(71, 30));
-		 * createButton.setFont(new Font("SansSerif", Font.BOLD, 11));
-		 * createButton.setForeground(new Color(255, 255, 255));
-		 * createButton.setBackground(new Color(220, 20,60));
-		 */
 
 		calendar.add(createButton, BorderLayout.NORTH);
 		calendar.add(monthLabel, BorderLayout.CENTER);
@@ -230,79 +232,72 @@ public class CalendarView extends JFrame {
 	public void createEvent() {
 		setResizable(false);
 
-		popWindow1.setLayout(new BorderLayout());
+		optionWindow.setLayout(new BorderLayout());
 
-		popWindow1.add(dayEventButton, BorderLayout.NORTH);
+		optionWindow.add(dayEventButton, BorderLayout.NORTH);
 
-		popWindow1.add(recurringEventButton, BorderLayout.CENTER);
-		
-		popWindow1.add(cancel1Button, BorderLayout.SOUTH);
-		
+		optionWindow.add(recurringEventButton, BorderLayout.CENTER);
 
-		popWindow1.pack();
+		optionWindow.add(optionWindowCancel, BorderLayout.SOUTH);
 
-		popWindow1.setVisible(true);
-		popWindow1.setResizable(false);
-		
+		optionWindow.pack();
+
+		optionWindow.setVisible(true);
+		optionWindow.setResizable(false);
+
 	}
 
 	public void createDayEvent() {
-		
-		JTextField event = new JTextField(40);
-		JTextField startTime = new JTextField(10);
-		JTextField endTime = new JTextField(10);
 
-		event.setText("Enter event here");
+		dayEventEventField.setText("Enter event here");
 
-		JTextArea date = new JTextArea();
-
-		date.setText(
+		dayEventDateField.setText(
 				(cal.get(Calendar.MONTH)) + 1 + "/" + cal.get(Calendar.DAY_OF_MONTH) + "/" + cal.get(Calendar.YEAR));
 
-		startTime.setText("14:00");
+		dayEventStartTimeField.setText("14:00");
 
 		JLabel to = new JLabel("  to  ");
 
-		endTime.setText("16:00");
+		dayEventEndTimeField.setText("16:00");
 
-		top.add(event);
+		dayEventTop.add(dayEventEventField);
 
-		bottom.setLayout(new FlowLayout());
+		dayEventBottom.setLayout(new FlowLayout());
 
-		bottom.add(date);
+		dayEventBottom.add(dayEventDateField);
 
-		bottom.add(startTime);
+		dayEventBottom.add(dayEventStartTimeField);
 
-		bottom.add(to);
+		dayEventBottom.add(to);
 
-		bottom.add(endTime);
+		dayEventBottom.add(dayEventEndTimeField);
 
-		bottom.add(saveButton);
+		dayEventBottom.add(dayEventSave);
 
-		bottom.add(cancel2Button);
+		dayEventBottom.add(dayEventCancel);
 
-		popWindow2.setLayout(new BorderLayout());
+		dayEventWindow.setLayout(new BorderLayout());
 
-		popWindow2.add(top, BorderLayout.NORTH);
+		dayEventWindow.add(dayEventTop, BorderLayout.NORTH);
 
-		popWindow2.add(bottom, BorderLayout.SOUTH);
+		dayEventWindow.add(dayEventBottom, BorderLayout.SOUTH);
 
-		popWindow2.pack();
+		dayEventWindow.pack();
 
-		popWindow2.setVisible(true);
-		popWindow2.setResizable(false);
+		dayEventWindow.setVisible(true);
+		dayEventWindow.setResizable(false);
 	}
-	
-	public void deletePopWindow1() {
-		popWindow1.remove(top);
-		popWindow1.remove(bottom);
-		top.removeAll();
-		bottom.removeAll();
-		popWindow1.dispose();
+
+	public void createRecurringEvent() {
+
 	}
-	
-	public void deletePopWindow2() {
-		popWindow2.dispose();
+
+	public void deleteOptionWindow() {
+		optionWindow.dispose();
+	}
+
+	public void deleteDayEventWindow() {
+		dayEventWindow.dispose();
 	}
 
 	public void setViewBy(String viewBy) {
@@ -311,6 +306,22 @@ public class CalendarView extends JFrame {
 
 	public String getViewBy() {
 		return viewBy;
+	}
+
+	public JTextField getEventTextField() {
+		return dayEventEventField;
+	}
+
+	public JTextField getStartTimeTextField() {
+		return dayEventStartTimeField;
+	}
+
+	public JTextField getEndTimeTextField() {
+		return dayEventEndTimeField;
+	}
+
+	public JTextArea getDateTextField() {
+		return dayEventDateField;
 	}
 
 	public void addTodayButton(ActionListener listener) {
@@ -352,17 +363,17 @@ public class CalendarView extends JFrame {
 
 		createButton.addActionListener(listener);
 	}
-	
+
 	public void addDayEventButton(ActionListener listener) {
 		dayEventButton.addActionListener(listener);
 	}
 
-	public void addCancel1Button(ActionListener listener) {
-		cancel1Button.addActionListener(listener);
+	public void addOptionWindowCancelButton(ActionListener listener) {
+		optionWindowCancel.addActionListener(listener);
 	}
-	
-	public void addCancel2Button(ActionListener listener) {
-		cancel2Button.addActionListener(listener);
+
+	public void addDayEventWindowCancelButton(ActionListener listener) {
+		dayEventCancel.addActionListener(listener);
 	}
 
 }

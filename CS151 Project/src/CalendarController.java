@@ -23,8 +23,8 @@ public class CalendarController {
 		this.view.addAgendaButton(new AgendaListener());
 		this.view.addCreateButton(new CreateListener());
 		this.view.addDayEventButton(new DayEventListener());
-		this.view.addCancel1Button(new Cancel1Listener());
-		this.view.addCancel2Button(new Cancel2Listener());
+		this.view.addOptionWindowCancelButton(new OptionWindowCancel());
+		this.view.addDayEventWindowCancelButton(new DayEventWindowCancel());
 	}
 
 	public class TodayListener implements ActionListener {
@@ -180,20 +180,20 @@ public class CalendarController {
 		
 	}
 	
-	public class Cancel1Listener implements ActionListener{
+	public class OptionWindowCancel implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			view.deletePopWindow1();
+			view.deleteOptionWindow();
 		}
 		
 	}
 	
-	public class Cancel2Listener implements ActionListener{
+	public class DayEventWindowCancel implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			view.deletePopWindow2();
+			view.deleteDayEventWindow();
 		}
 		
 	}

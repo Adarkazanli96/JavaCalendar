@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 public class CalendarModel {
 
@@ -65,6 +66,7 @@ public class CalendarModel {
 
 			recurringEventsList.add(
 					new RecurringEvent(eventName, year, startingMonth, endingMonth, days, startingTime, endingTime));
+				
 		}
 
 		br.close();
@@ -107,6 +109,8 @@ public class CalendarModel {
 		brr.close();
 		
 		convertFromRecToDay();
+		
+		sortByDateTime();
 
 	}
 
@@ -329,4 +333,10 @@ public class CalendarModel {
 
 		cal.set(currentYear, currentMonth, currentDay);
 	}
+	
+	public void sortByDateTime(){
+		TreeSet<DayEvent> sorter = new TreeSet<>(dayEventsList);
+		dayEventsList.removeAll(dayEventsList);
+		dayEventsList.addAll(sorter);
+}
 }
