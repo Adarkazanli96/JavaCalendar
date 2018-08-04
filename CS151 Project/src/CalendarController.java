@@ -14,6 +14,7 @@ public class CalendarController {
 	private CalendarModel model;
 	private GregorianCalendar cal;
 	private File eventFile;
+	private File inputFile;
 
 	public CalendarController(CalendarModel model, CalendarView view) {
 		this.model = model;
@@ -238,12 +239,15 @@ public class CalendarController {
 				 * Integer.parseInt(view.getStartTimeTextField().getText()));
 				 */
 
-				if (event.getYear() == cal.get(Calendar.YEAR) && event.getMonth() == (cal.get(Calendar.MONTH)) + 1
+				if ((event.getYear() == cal.get(Calendar.YEAR) && event.getMonth() == (cal.get(Calendar.MONTH)) + 1
 						&& event.getDay() == cal.get(Calendar.DAY_OF_MONTH)
 						&& Integer.parseInt(view.getStartTimeTextField().getText()) >= event.getStartingTime()
-						&& Integer.parseInt(view.getStartTimeTextField().getText()) < event.getEndingTime()
-						|| Integer.parseInt(view.getEndTimeTextField().getText()) < event.getEndingTime()
-								&& Integer.parseInt(view.getEndTimeTextField().getText()) > event.getStartingTime()) {
+						&& Integer.parseInt(view.getStartTimeTextField().getText()) < event.getEndingTime())
+						|| 
+						(event.getYear() == cal.get(Calendar.YEAR) && event.getMonth() == (cal.get(Calendar.MONTH)) + 1
+						&& event.getDay() == cal.get(Calendar.DAY_OF_MONTH)
+						&&Integer.parseInt(view.getEndTimeTextField().getText()) < event.getEndingTime()
+								&& Integer.parseInt(view.getEndTimeTextField().getText()) > event.getStartingTime())) {
 
 					// System.out.println("Entered conflic");
 
@@ -323,12 +327,15 @@ public class CalendarController {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			
 			String date[] = view.getRecurringEventStartDateField().getText().split("/");
-			int year = Integer.parseInt(date[0]);
-			int startingMonth = Integer.parseInt(date[1]);
+			int year = Integer.parseInt(date[2]);
+			int startingMonth = Integer.parseInt(date[0]);
+			
+			//System.out.println(year+" "+startingMonth);
 
 			String date2[] = view.getRecurringEventEndDateField().getText().split("/");
-			int endingMonth = Integer.parseInt(date2[1]);
+			int endingMonth = Integer.parseInt(date2[0]);
 
 			RecurringEvent temp = new RecurringEvent(view.getRecurringEventEventField().getText(), year, startingMonth,
 					endingMonth, view.getRecurringEventDayField().getText(),
@@ -338,26 +345,128 @@ public class CalendarController {
 			ArrayList<RecurringEvent> recurringList = new ArrayList<RecurringEvent>();
 			recurringList.add(temp);
 			ArrayList<DayEvent> dayList = model.convert(recurringList);
-
-			System.out.println(dayList.size());
+			
+			//System.out.println(recurringList.size());
+			//System.out.println(dayList.size());
 
 			boolean conflict = false;
-			outerloop: for (DayEvent d1 : dayList) {
-				for (DayEvent d2 : model.getAllDayEvents()) {
-					if (d1.equals(d2)) {
-						view.displayErrorMessage("Time Conflict! Try Again");
-						conflict = true;
-						break outerloop;
+			
+			outerloop: 
+				for (DayEvent d1 : model.getAllDayEvents()) {
+					
+					for (DayEvent d2 : dayList) {
+						
+						
+						
+						if (d1.getYear() == d2.getYear()
+								&& d1.getMonth() == d2.getMonth()
+								&& d1.getDay() == d2.getDay()
+								&& d2.getStartingTime() >= d1.getStartingTime()
+								&& d2.getStartingTime() < d1.getEndingTime()
+								
+								|| 
+								
+								d1.getYear() == d2.getYear()
+								&& d1.getMonth() == d2.getMonth()
+								&& d1.getDay() == d2.getDay()
+								&& d2.getEndingTime() >= d1.getEndingTime()
+								&& d2.getEndingTime() < d1.getStartingTime()
+
+								) {
+							
+							System.out.println("entered conflict");
+							
+							System.out.println(d1.getDay());
+							System.out.println(d2.getDay()+"\n");
+							
+							view.displayErrorMessage("Time Conflict! Try Again");
+							
+							
+							
+							conflict = true;
+							
+							break outerloop;
+						}
 					}
-				}
 
-				if (!conflict) {
+				}
+			
+				if (conflict == false) {
+					
 					model.dayEventsList.addAll(dayList);
+					model.recurringEventsList.addAll(recurringList);
 					model.sortByDateTime();
+					view.deleteRecurringEventWindow();
+				}
+				
+				model.sortByDateTime();
+
+				inputFile = new File("input.txt");
+
+				try {
+					inputFile.createNewFile();
+				} catch (IOException e1) {
+
+					e1.printStackTrace();
 				}
 
-			}
+				FileWriter fww = null;
 
+				try {
+
+					fww = new FileWriter(inputFile);
+				}
+
+				catch (IOException e1) {
+
+					e1.printStackTrace();
+				}
+
+				PrintWriter pww = new PrintWriter(fww);
+
+				for (RecurringEvent event : model.getAllRecurringEvents()) {
+
+					// System.out.println(event);
+
+					pww.write(event.getEventName() + ";" + event.getYear() + ";" + event.getStartingMonth() + ";" + event.getEndingMonth()
+							+";"+ event.getDays() +";" + event.getStartingTime() + ";" + event.getEndingTime() + "\n");
+				}
+
+				pww.close();
+				
+				eventFile = new File("events.txt");
+
+				try {
+					eventFile.createNewFile();
+				} catch (IOException e1) {
+
+					e1.printStackTrace();
+				}
+
+				FileWriter fw = null;
+
+				try {
+
+					fw = new FileWriter(eventFile);
+				}
+
+				catch (IOException e1) {
+
+					e1.printStackTrace();
+				}
+
+				PrintWriter pw = new PrintWriter(fw);
+
+				for (DayEvent event : model.getAllDayEvents()) {
+
+					// System.out.println(event);
+
+					pw.write(event.getEventName() + ";" + event.getYear() + ";" + event.getMonth() + ";" + event.getDay()
+							+ ";" + event.getStartingTime() + ";" + event.getEndingTime() + "\n");
+				}
+
+				pw.close();
+				
 			if (view.getViewBy().equals("Day")) {
 				view.repaint();
 				view.printDayEventsText();
@@ -371,7 +480,6 @@ public class CalendarController {
 				view.repaint();
 				view.printMonthEventsText();
 			}
-			view.deleteRecurringEventWindow();
 		}
 
 	}
@@ -382,7 +490,5 @@ public class CalendarController {
 		public void actionPerformed(ActionEvent e) {
 			view.deleteRecurringEventWindow();
 		}
-
 	}
-
 }

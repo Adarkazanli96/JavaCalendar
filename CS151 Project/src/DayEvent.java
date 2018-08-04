@@ -62,7 +62,7 @@ public class DayEvent implements Comparable<DayEvent> {
 	}
 
 	public String toString() {
-		return eventName + " " + getMonth() + " " + getDay() + ", " + getYear() + ": " + getStartingTime() + " - "
+		return getMonth() + "/" + getDay() + "/" + getYear() + ": " + eventName + " from " + getStartingTime() + " to "
 				+ getEndingTime();
 	}
 

@@ -168,14 +168,19 @@ public class CalendarModel {
 	public ArrayList<DayEvent> getAllDayEvents() {
 		return dayEventsList;
 	}
+	
 
 	public void addDayEvent(DayEvent e) {
 		dayEventsList.add(e);
 	}
+	
+	public void addRecurringEvent(RecurringEvent e) {
+		recurringEventsList.add(e);
+	}
 
 	public void convertFromRecToDay() {
 
-		System.out.println("entered method");
+		//System.out.println("entered method");
 
 		ArrayList<RecurringEvent> tempList = new ArrayList<>(); // list of RecurringEvents in single day form
 
@@ -254,9 +259,9 @@ public class CalendarModel {
 
 			LocalDate dateOfLastDay = date2.with(TemporalAdjusters.firstInMonth((DayOfWeek) myDay));
 
-			System.out.println("first " + dateOfFirstDay);
+			//System.out.println("first " + dateOfFirstDay);
 
-			System.out.println("last " + dateOfLastDay);
+			//System.out.println("last " + dateOfLastDay);
 
 			GregorianCalendar myCal = new GregorianCalendar();
 
@@ -343,8 +348,10 @@ public class CalendarModel {
 		ArrayList<DayEvent> tempList2 = new ArrayList<>(); // list of recurring events in DayEvent form.
 
 		for (RecurringEvent e : tempList) {
+			
+			//System.out.println(e.getYear());
 
-			TemporalAdjuster myDay = null;
+			TemporalAdjuster myDay2 = null;
 
 			Month myStartingMonth = null;
 
@@ -352,37 +359,37 @@ public class CalendarModel {
 
 			if (e.getDays().equals("S")) {
 
-				myDay = DayOfWeek.SUNDAY;
+				myDay2 = DayOfWeek.SUNDAY;
 			}
 
 			if (e.getDays().equals("M")) {
 
-				myDay = DayOfWeek.MONDAY;
+				myDay2 = DayOfWeek.MONDAY;
 			}
 
 			if (e.getDays().equals("T")) {
 
-				myDay = DayOfWeek.TUESDAY;
+				myDay2 = DayOfWeek.TUESDAY;
 			}
 
 			if (e.getDays().equals("W")) {
 
-				myDay = DayOfWeek.WEDNESDAY;
+				myDay2 = DayOfWeek.WEDNESDAY;
 			}
 
 			if (e.getDays().equals("H")) {
 
-				myDay = DayOfWeek.THURSDAY;
+				myDay2 = DayOfWeek.THURSDAY;
 			}
 
 			if (e.getDays().equals("F")) {
 
-				myDay = DayOfWeek.FRIDAY;
+				myDay2 = DayOfWeek.FRIDAY;
 			}
 
 			if (e.getDays().equals("A")) {
 
-				myDay = DayOfWeek.SATURDAY;
+				myDay2 = DayOfWeek.SATURDAY;
 			}
 
 			myStartingMonth = Month.of(e.getStartingMonth());
@@ -393,23 +400,21 @@ public class CalendarModel {
 
 			LocalDate date2 = LocalDate.of(e.getYear(), myEndingMonth, 15);
 
-			LocalDate dateOfFirstDay = date.with(TemporalAdjusters.firstInMonth((DayOfWeek) myDay));
+			LocalDate dateOfFirstDay = date.with(TemporalAdjusters.firstInMonth((DayOfWeek) myDay2));
 
-			LocalDate dateOfLastDay = date2.with(TemporalAdjusters.firstInMonth((DayOfWeek) myDay));
+			LocalDate dateOfLastDay = date2.with(TemporalAdjusters.firstInMonth((DayOfWeek) myDay2));
 
-			System.out.println("first " + dateOfFirstDay);
+			//System.out.println("first " + dateOfFirstDay);
 
-			System.out.println("last " + dateOfLastDay);
+			//System.out.println("last " + dateOfLastDay);
 
 			GregorianCalendar myCal = new GregorianCalendar();
 
 			myCal.set(dateOfFirstDay.getYear(), (dateOfFirstDay.getMonthValue()) - 1, dateOfFirstDay.getDayOfMonth());
 
-			// System.out.println(myCal.get(Calendar.YEAR)+"
-			// "+((myCal.get(Calendar.MONTH))-1)+" "+myCal.get(Calendar.DAY_OF_MONTH));
+			//System.out.println(myCal.get(Calendar.YEAR)+" "+((myCal.get(Calendar.MONTH))-1)+" "+myCal.get(Calendar.DAY_OF_MONTH));
 
-			// System.out.println(dateOfLastDay.getYear()+"
-			// "+dateOfLastDay.getMonthValue()+" "+dateOfLastDay.getDayOfMonth());
+			//System.out.println(dateOfLastDay.getYear()+" "+dateOfLastDay.getMonthValue()+" "+dateOfLastDay.getDayOfMonth());
 
 			boolean stop = false;
 
@@ -467,21 +472,21 @@ public class CalendarModel {
 
 	public void updateCalendar(GregorianCalendar cal) {
 
-		System.out.println("entered update");
+		//System.out.println("entered update");
 		this.cal = cal;
 
 	}
 
 	public void setDay(int day) {
 
-		System.out.println("entered setDay");
+		//System.out.println("entered setDay");
 
 		cal.set(Calendar.DAY_OF_MONTH, day);
 	}
 
 	public void resetCalendar() {
 
-		System.out.println("entered reset");
+		//System.out.println("entered reset");
 
 		cal.set(currentYear, currentMonth, currentDay);
 	}
