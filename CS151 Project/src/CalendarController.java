@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -185,6 +186,7 @@ public class CalendarController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			view.createDayEvent();
+			view.deleteOptionWindow();
 		}
 
 	}
@@ -194,6 +196,7 @@ public class CalendarController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			view.createRecurringEvent();
+			view.deleteOptionWindow();
 		}
 
 	}
@@ -220,6 +223,7 @@ public class CalendarController {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+
 			System.out.println("Entered save listener");
 
 			DayEvent temp = null;
@@ -243,7 +247,7 @@ public class CalendarController {
 
 					// System.out.println("Entered conflic");
 
-					view.displayErrorMessage("Enter event without time conflict");
+					view.displayErrorMessage("Time Conflict! Try Again");
 				}
 
 				else {
@@ -254,7 +258,9 @@ public class CalendarController {
 							(cal.get(Calendar.MONTH)) + 1, cal.get(Calendar.DAY_OF_MONTH),
 							Integer.parseInt(view.getStartTimeTextField().getText()),
 							Integer.parseInt(view.getEndTimeTextField().getText()));
+
 				}
+
 			}
 
 			model.addDayEvent(temp);
@@ -293,14 +299,79 @@ public class CalendarController {
 			}
 
 			pw.close();
+
+			if (view.getViewBy().equals("Day")) {
+				view.repaint();
+				view.printDayEventsText();
+			}
+
+			else if (view.getViewBy().equals("Week")) {
+				view.repaint();
+				view.printWeekEventsText();
+
+			} else if (view.getViewBy().equals("Month")) {
+				view.repaint();
+				view.printMonthEventsText();
+			}
+
+			view.deleteDayEventWindow();
 		}
+
 	}
 
 	public class RecurringEventWindowSave implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			String date[] = view.getRecurringEventStartDateField().getText().split("/");
+			int year = Integer.parseInt(date[0]);
+			int startingMonth = Integer.parseInt(date[1]);
 
+			String date2[] = view.getRecurringEventEndDateField().getText().split("/");
+			int endingMonth = Integer.parseInt(date2[1]);
+
+			RecurringEvent temp = new RecurringEvent(view.getRecurringEventEventField().getText(), year, startingMonth,
+					endingMonth, view.getRecurringEventDayField().getText(),
+					Integer.parseInt(view.getRecurringEventStartTimeField().getText()),
+					Integer.parseInt(view.getRecurringEventEndTimeField().getText()));
+
+			ArrayList<RecurringEvent> recurringList = new ArrayList<RecurringEvent>();
+			recurringList.add(temp);
+			ArrayList<DayEvent> dayList = model.convert(recurringList);
+
+			System.out.println(dayList.size());
+
+			boolean conflict = false;
+			outerloop: for (DayEvent d1 : dayList) {
+				for (DayEvent d2 : model.getAllDayEvents()) {
+					if (d1.equals(d2)) {
+						view.displayErrorMessage("Time Conflict! Try Again");
+						conflict = true;
+						break outerloop;
+					}
+				}
+
+				if (!conflict) {
+					model.dayEventsList.addAll(dayList);
+					model.sortByDateTime();
+				}
+
+			}
+
+			if (view.getViewBy().equals("Day")) {
+				view.repaint();
+				view.printDayEventsText();
+			}
+
+			else if (view.getViewBy().equals("Week")) {
+				view.repaint();
+				view.printWeekEventsText();
+
+			} else if (view.getViewBy().equals("Month")) {
+				view.repaint();
+				view.printMonthEventsText();
+			}
+			view.deleteRecurringEventWindow();
 		}
 
 	}

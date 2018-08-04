@@ -70,7 +70,7 @@ public class CalendarView extends JFrame {
 	JTextField recurringEventEventField = new JTextField(40);
 	JTextField recurringEventStartTimeField = new JTextField(10);
 	JTextField recurringEventEndTimeField = new JTextField(10);
-	JTextField recurringEventDayField = new JTextField(2);
+	JTextField recurringEventDayField = new JTextField(4);
 	JTextArea recurringEventStartDateField = new JTextArea();
 	JTextArea recurringEventEndDateField = new JTextArea(1, 6);
 
@@ -154,7 +154,20 @@ public class CalendarView extends JFrame {
 					public void mouseClicked(MouseEvent e) {
 						int num = Integer.parseInt(day.getText());
 						model.setDay(num);
-						repaint();
+
+						if (getViewBy().equals("Day")) {
+							repaint();
+							printDayEventsText();
+						}
+
+						else if (getViewBy().equals("Week")) {
+							repaint();
+							printWeekEventsText();
+
+						} else if (getViewBy().equals("Month")) {
+							repaint();
+							printMonthEventsText();
+						}
 					}
 
 					@Override
@@ -270,7 +283,6 @@ public class CalendarView extends JFrame {
 		dayEventDateField.setText(
 				(cal.get(Calendar.MONTH)) + 1 + "/" + cal.get(Calendar.DAY_OF_MONTH) + "/" + cal.get(Calendar.YEAR));
 
-
 		dayEventStartTimeField.setText("HH");
 
 		JLabel to = new JLabel("  to  ");
@@ -280,9 +292,8 @@ public class CalendarView extends JFrame {
 		dayEventTop.add(dayEventEventField);
 
 		dayEventBottom.setLayout(new FlowLayout());
-		
-		dayEventBottom.add(new JLabel("Date: "));
-		dayEventBottom.add(dayEventDateField);
+
+		dayEventBottom.add(new JLabel("Date: " + dayEventDateField.getText()));
 		dayEventBottom.add(new JLabel("Time: "));
 		dayEventBottom.add(dayEventStartTimeField);
 		dayEventBottom.add(to);
@@ -309,11 +320,14 @@ public class CalendarView extends JFrame {
 		recurringEventStartDateField.setText(
 				(cal.get(Calendar.MONTH)) + 1 + "/" + cal.get(Calendar.DAY_OF_MONTH) + "/" + cal.get(Calendar.YEAR));
 
-		recurringEventEndDateField.setText("");
+		recurringEventEndDateField.setText(
+				(cal.get(Calendar.MONTH)) + 2 + "/" + cal.get(Calendar.DAY_OF_MONTH) + "/" + cal.get(Calendar.YEAR));
 
-		recurringEventStartTimeField.setText("14:00");
+		recurringEventStartTimeField.setText("HH");
 
-		recurringEventEndTimeField.setText("16:00");
+		recurringEventEndTimeField.setText("HH");
+
+		recurringEventDayField.setText("MWF");
 
 		recurringEventTop.add(recurringEventEventField);
 
@@ -328,6 +342,7 @@ public class CalendarView extends JFrame {
 		datePanel.add(recurringEventEndDateField);
 		datePanel.add(new JLabel("Days: "));
 		datePanel.add(recurringEventDayField);
+		datePanel.add(new JLabel("(S M T W H F A)"));
 
 		timePanel.add(new JLabel("Time: "));
 		timePanel.setLayout(new FlowLayout());
@@ -418,6 +433,30 @@ public class CalendarView extends JFrame {
 
 	public JTextArea getDateTextField() {
 		return dayEventDateField;
+	}
+
+	public JTextField getRecurringEventEventField() {
+		return recurringEventEventField;
+	}
+
+	public JTextField getRecurringEventStartTimeField() {
+		return recurringEventStartTimeField;
+	}
+
+	public JTextField getRecurringEventEndTimeField() {
+		return recurringEventEndTimeField;
+	}
+
+	public JTextField getRecurringEventDayField() {
+		return recurringEventDayField;
+	}
+
+	public JTextArea getRecurringEventStartDateField() {
+		return recurringEventStartDateField;
+	}
+
+	public JTextArea getRecurringEventEndDateField() {
+		return recurringEventEndDateField;
 	}
 
 	public void addTodayButton(ActionListener listener) {
