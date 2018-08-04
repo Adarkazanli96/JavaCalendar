@@ -1,0 +1,10 @@
+Lunch;2018;8;11;MWF;12;13
+Dinner;2018;8;11;MWF;17;18
+Gym;2018;8;9;TH;14;16
+Math;2018;8;9;MW;14;15
+Science;2018;8;9;S;12;1
+Art;2018;8;9;A;2;3
+Camping;2018;8;9;MWF;5;6
+Breakfast;2018;8;9;MWF;9;10
+Tutoring;2018;8;9;S;16;17
+Commute;2018;8;9;MWF;18;19
