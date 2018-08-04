@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+// Events that occur once
 public class DayEvent implements Comparable<DayEvent> {
 
 	private String eventName;
@@ -28,22 +29,18 @@ public class DayEvent implements Comparable<DayEvent> {
 	}
 
 	public String getEventName() {
-
 		return eventName;
 	}
 
 	public int getYear() {
-
 		return year;
 	}
 
 	public int getMonth() {
-
 		return month;
 	}
 
 	public int getDay() {
-
 		return day;
 	}
 
@@ -52,12 +49,10 @@ public class DayEvent implements Comparable<DayEvent> {
 	}
 
 	public int getStartingTime() {
-
 		return startingTime;
 	}
 
 	public int getEndingTime() {
-
 		return endingTime;
 	}
 
@@ -71,31 +66,20 @@ public class DayEvent implements Comparable<DayEvent> {
 		int yearCmp = this.year - that.year;
 		int monthCmp = this.month - that.month;
 		int dayCmp = this.day - that.day;
-
 		int hourCmp = this.startingTime - that.startingTime;
 
 		if (yearCmp != 0) {
-
 			return yearCmp;
-		}
-
-		else if (monthCmp != 0) {
-
+		} else if (monthCmp != 0) {
 			return monthCmp;
-		}
-
-		else if (dayCmp != 0) {
-
+		} else if (dayCmp != 0) {
 			return dayCmp;
 		}
-
 		return hourCmp;
 	}
 
 	public boolean equals(Object x) {
-
 		DayEvent that = (DayEvent) x;
-
 		return this.compareTo(that) == 0;
 	}
 
