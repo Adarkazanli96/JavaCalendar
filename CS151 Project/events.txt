@@ -1,13 +1,1 @@
-Dinner;2018;8;3;6;7
-Camping;2018;8;3;9;10
-Lunch;2018;8;3;10;11
-Enter event here;2018;8;3;12;13
-Golf;2018;8;4;12;13
-Enter event here;2018;8;10;12;13
-Enter event here;2018;8;17;12;13
-Enter event here;2018;8;24;12;13
-Enter event here;2018;8;31;12;13
-Enter event here;2018;9;7;12;13
-Enter event here;2018;9;14;12;13
-Enter event here;2018;9;21;12;13
-Enter event here;2018;9;28;12;13
+Camping;2017;7;4;12;14

@@ -25,6 +25,9 @@ public class CalendarModel {
 		// Read the recurring events text file and store each event in the recurring
 		// events ArrayList
 		File recurringEventFile = new File("input.txt");
+		if (!recurringEventFile.exists()) {
+			recurringEventFile.createNewFile();
+		}
 		FileReader fr = new FileReader(recurringEventFile);
 		BufferedReader br = new BufferedReader(fr);
 		boolean endFile = false;
@@ -50,6 +53,13 @@ public class CalendarModel {
 		// Read the day events text file and store each event in the day events
 		// ArrayList
 		File dayEventFile = new File("events.txt");
+
+		if (!dayEventFile.exists()) {
+			dayEventFile.createNewFile();
+			PrintWriter pw = new PrintWriter(dayEventFile);
+			pw.write("Camping;" + (currentYear - 1) + ";" + currentMonth + ";" + currentDay + ";" + 12 + ";" + 14 + "\n");
+			pw.close();
+		}
 		FileReader frr = new FileReader(dayEventFile);
 		BufferedReader brr = new BufferedReader(frr);
 		boolean endingFile = false;

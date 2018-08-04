@@ -239,6 +239,9 @@ public class CalendarController {
 								&& Integer.parseInt(view.getEndTimeTextField().getText()) < event.getEndingTime()
 								&& Integer.parseInt(view.getEndTimeTextField().getText()) > event.getStartingTime())) {
 					view.displayErrorMessage("Time Conflict! Try Again");
+					// dispose window
+					view.deleteDayEventWindow();
+					return;
 				}
 
 				// if there is no conflict, create a new Day Event with the given information
